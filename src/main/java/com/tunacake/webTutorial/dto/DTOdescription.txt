@@ -1,0 +1,13 @@
+DTO (Data Transfer Object)
+
+Description:
+A DTO is a simple object that carries only data and no business logic. It is used to transfer data between application layers (controller, service, presentation) and between server and client, exposing only the fields required.
+
+Working:
+- Client sends or receives DTOs (commonly as JSON).
+- Controller accepts DTOs (e.g., @RequestBody), validates them, and maps them to domain/entity objects.
+- Service applies business logic to domain objects and returns DTOs to the controller.
+- Mapping between DTOs and entities can be manual or via mappers (MapStruct, ModelMapper).
+
+Benefits:
+Reduces coupling, limits exposed fields, improves performance by transferring only needed data, and simplifies validation and serialization.

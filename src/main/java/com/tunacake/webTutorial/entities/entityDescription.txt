@@ -1,0 +1,14 @@
+Entity (JPA Entity)
+
+Description:
+An Entity is a domain object mapped to a database table using JPA annotations (e.g., @Entity, @Table). It represents persistent state and typically contains fields, accessors, and mapping metadata (@Id, @GeneratedValue, @Column, @OneToMany, @ManyToOne, etc.).
+
+Working:
+- Entities are created/loaded by application code and managed by the JPA provider (Hibernate) inside a persistence context.
+- Repositories (Spring Data JPA) perform CRUD operations on entities within transactions.
+- The persistence context tracks changes (dirty checking) and flushes SQL to the database at transaction commit or on flush.
+- Entities should focus on persistence concerns; avoid embedding heavy business logic. Use services for transactions and business rules, and DTOs for API boundaries.
+- Implement equals()/hashCode() carefully (prefer business key or database id patterns) and control relationship fetching (LAZY vs EAGER) to prevent performance issues.
+
+Notes:
+Keep entities stable (schema-aligned), use validation on DTOs or at service boundary, and prefer projection/DTOs for API responses to avoid exposing internal persistence details.

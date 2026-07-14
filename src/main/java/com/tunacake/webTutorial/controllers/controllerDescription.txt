@@ -1,0 +1,15 @@
+Controller (Spring MVC Controller)
+
+Description:
+A controller handles HTTP requests and produces HTTP responses. In Spring, controllers are annotated with @Controller or @RestController and map URLs to handler methods using @RequestMapping, @GetMapping, @PostMapping, etc. Controllers orchestrate input parsing (path variables, query params, @RequestBody DTOs), basic validation, and call the service layer to execute business logic.
+
+Working:
+- Client sends an HTTP request to an endpoint.
+- The request is routed by DispatcherServlet and HandlerMapping to the appropriate controller method.
+- Method parameters are populated (path vars, query params, headers, request body). DTOs can be received via @RequestBody and validated (e.g., @Valid).
+- The controller calls the service layer with domain objects; the service performs business logic and returns results.
+- The controller maps results to response DTOs or ResponseEntity, sets HTTP status and headers, and returns them.
+- HttpMessageConverters serialize the response (e.g., JSON) to the client.
+
+Notes:
+Controllers should contain no business logic; keep them thin. Use exception handlers (@ControllerAdvice) for consistent error responses, and mappers (MapStruct/ModelMapper) to convert between DTOs and entities.
