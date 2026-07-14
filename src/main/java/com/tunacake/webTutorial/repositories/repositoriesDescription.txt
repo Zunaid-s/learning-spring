@@ -1,0 +1,12 @@
+Repository (Spring Data Repository)
+
+Description:
+A repository provides the persistence API for entities. In Spring Data, repositories are typically interfaces that extend JpaRepository, CrudRepository, or PagingAndSortingRepository. Spring generates concrete implementations at runtime, exposing CRUD operations and derived query methods.
+
+Working:
+- Services inject repositories and call methods like save, findById, findAll, delete, and custom query methods.
+- Spring builds implementations and query logic from method names or @Query annotations; custom implementations can be provided when necessary.
+- Repositories participate in transactions started at the service layer and execute SQL via the JPA provider.
+
+Notes:
+Keep repositories focused on data access—avoid business logic. Use projections, DTOs, or limiting queries to avoid loading unnecessary data. Write unit/integration tests for custom queries and indexing-sensitive operations.

@@ -1,0 +1,13 @@
+Service (Service Layer)
+
+Description:
+The service layer contains business logic and transaction boundaries. Services coordinate repositories and other components to enforce business rules, perform validations not appropriate for controllers, and manage application workflows.
+
+Working:
+- Controller invokes service methods with DTOs or mapped domain objects.
+- Services execute business rules, call repositories (CRUD), and manage transactions (e.g., @Transactional).
+- Services map entities to response DTOs (or vice versa), call external APIs, and handle retries, caching, or scheduling where needed.
+- Errors are translated into domain exceptions; controllers map them to HTTP responses or global handlers.
+
+Notes:
+Keep services focused and testable; prefer small methods and composition. Avoid embedding HTTP or persistence concerns into controllers—services should own transactions and business consistency.
