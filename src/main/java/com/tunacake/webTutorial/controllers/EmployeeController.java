@@ -1,9 +1,9 @@
 package com.tunacake.webTutorial.controllers;
 
 
-import com.tunacake.webTutorial.dto.CreateEmployeeDTO;
 import com.tunacake.webTutorial.dto.EmployeeDTO;
 import com.tunacake.webTutorial.services.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +45,7 @@ public class EmployeeController {
     }
 
     @PostMapping/* The @PostMapping annotation tells Spring that this method will handle POST requests to the root path*/
-    public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody CreateEmployeeDTO newemployeeDTO) {/*The @RequestBody annotation allows spring to read the body/contents of the data(usually JSON/XML data) that came with the request body*/
+    public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody @Valid EmployeeDTO newemployeeDTO) {/*The @RequestBody annotation allows spring to read the body/contents of the data(usually JSON/XML data) that came with the request body*/
         return new ResponseEntity<>(employeeService.createNewEmployee(newemployeeDTO),HttpStatus.CREATED);
     }
 
@@ -55,7 +55,7 @@ public class EmployeeController {
     * @RequestBody - read the data in the body of the request*/
 
     @PutMapping(path = "/{employeeID}")
-    public ResponseEntity<EmployeeDTO> updateEmployeeByID(@RequestBody CreateEmployeeDTO employeeDTO, @PathVariable(name = "employeeID") UUID id){
+    public ResponseEntity<EmployeeDTO> updateEmployeeByID(@RequestBody EmployeeDTO employeeDTO, @PathVariable(name = "employeeID") UUID id){
         return new ResponseEntity<>(employeeService.updateEmployeeByID(id, employeeDTO), HttpStatus.ACCEPTED);
     }
 
@@ -65,7 +65,6 @@ public class EmployeeController {
         if(isDeleted)
             return ResponseEntity.ok(true);
         return ResponseEntity.notFound().build();
-
     }
 
     @PatchMapping(path = "/{employeeID}")
