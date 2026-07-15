@@ -1,5 +1,6 @@
 package com.tunacake.webTutorial.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +18,17 @@ public class EmployeeDTO { /*The DTO is a data transfer object that contains the
 /*DTO stays betenn the controller and the service layer*/
 /*DTOs are not used in the persistence layer*/
 /*Jackson is used to convert DTOs to JSON when sending responses to the client and vice versa*/
+
     private UUID id;
+
     private String name;
+
     private String email;
+
     private Integer age;
+
     private LocalDate dateofjoining;
+
+    @JsonProperty("isActive")
     private boolean isActive;
 }

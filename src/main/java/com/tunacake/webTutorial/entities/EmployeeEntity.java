@@ -1,6 +1,7 @@
 package com.tunacake.webTutorial.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -29,6 +30,7 @@ public class EmployeeEntity {
     private String email;
     private Integer age;
     private LocalDate dateofjoining;
+    @JsonProperty("isActive")
     private boolean isActive;
 
 }

@@ -1,5 +1,6 @@
 package com.tunacake.webTutorial.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class CreateEmployeeDTO {
     private String email;
     private Integer age;
     private LocalDate dateofjoining;
+    @JsonProperty("isActive")
     private boolean isActive;
 }

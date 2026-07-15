@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class EmployeeService {
@@ -21,7 +23,7 @@ public class EmployeeService {
         this.modelMapper = modelMapper;
     }
 
-    public EmployeeDTO getEmployeeByID(Long id) {
+    public EmployeeDTO getEmployeeByID(UUID id) {
         EmployeeEntity employeeEntity = employeeRepository.findById(id).orElse(null);
         return modelMapper.map(employeeEntity, EmployeeDTO.class);
     }
@@ -37,5 +39,30 @@ public class EmployeeService {
         EmployeeEntity employeeEntity = modelMapper.map(newemployeeDTO, EmployeeEntity.class);
         EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
         return modelMapper.map(savedEntity, EmployeeDTO.class);
+    }
+
+    public EmployeeDTO updateEmployeeByID(UUID id, CreateEmployeeDTO employeeDTO) {
+
+        EmployeeEntity employeeEntity = modelMapper.map(employeeDTO, EmployeeEntity.class);
+        employeeEntity.setId(id);
+        EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
+        return modelMapper.map(savedEntity, EmployeeDTO.class);
+
+    }
+
+    public boolean deleteEmployee(UUID id) {
+        boolean exists = employeeRepository.existsById(id);
+        if(!exists)
+            return false;
+        employeeRepository.deleteById(id);
+        return true;
+    }
+
+    public EmployeeDTO updatePartialEmployeeByID(UUID id, Map<String, Object> partialemployeeinfo) {
+        boolean exists = employeeRepository.existsById(id);
+        if(!exists) return null;
+        EmployeeEntity employeeEntity = employeeRepository.findById(id).orElse(null);
+        modelMapper.map(partialemployeeinfo, employeeEntity);
+        return modelMapper.map(employeeRepository.save(employeeEntity), EmployeeDTO.class);
     }
 }
