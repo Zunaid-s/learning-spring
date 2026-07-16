@@ -2,15 +2,14 @@ package com.tunacake.webTutorial.controllers;
 
 
 import com.tunacake.webTutorial.dto.EmployeeDTO;
+import com.tunacake.webTutorial.exception.ResourceNotFoundException;
 import com.tunacake.webTutorial.services.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController /* This will tell Spring that this is a REST Controller. Shortcut for "@Controller + @ResponseBody" */
 /* The @ResponseBody annotation tells Spring to return the response as JSON/XML instead of a view name */
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;// dependency injection here
     }
@@ -32,17 +30,21 @@ public class EmployeeController {
     /* If I want to have diffrent names for the path variable and the actually passed variable, I can use the @PathVariable(name="variableName") attribute where the "variableName" is the name of the variable in the URL*/
     @GetMapping(path = "/{employeeId}")
     public EmployeeDTO getEmployeeById(@PathVariable(name = "employeeId") UUID id) {
-        return employeeService.getEmployeeByID(id);
+        Optional<EmployeeDTO> employeeDTO = employeeService.getEmployeeByID(id);
+        return employeeDTO
+                .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: "+id)).getBody();
     }
 
     @GetMapping(path = "/getAllEmployees")
+        public ResponseEntity<List<EmployeeDTO>> getAllEmployees(/*@RequestParam(required = false ) int age, @RequestParam(required = false) String name*/) {
+        return ResponseEntity.ok(employeeService.getAllEmployee());
+    }
     /*The @RequestParams annotator lets us extract values of variables from URLs. The varaible name is the same as the one in the URL */
     /*Eg: localhost:8080/employees?age=22 */
     /*Eg: localhost:8080/employees?age=22&name=Juneth*/
-    /*If I want to make the variable name different from the one in the URL, I can use the @RequestParam(name="variableName") attribute where the "variableName" is the name of the variable in the URL*/
-    public ResponseEntity<List<EmployeeDTO>> getAllEmployees(/*@RequestParam(required = false ) int age, @RequestParam(required = false) String name*/) {
-        return ResponseEntity.ok(employeeService.getAllEmployee());
-    }
+    /*If I want to make the variable name different from the one in the URL,
+    I can use the @RequestParam(name="variableName") attribute where the "variableName" is the name of the variable in the URL*/
 
     @PostMapping/* The @PostMapping annotation tells Spring that this method will handle POST requests to the root path*/
     public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody @Valid EmployeeDTO newemployeeDTO) {/*The @RequestBody annotation allows spring to read the body/contents of the data(usually JSON/XML data) that came with the request body*/
@@ -55,7 +57,7 @@ public class EmployeeController {
     * @RequestBody - read the data in the body of the request*/
 
     @PutMapping(path = "/{employeeID}")
-    public ResponseEntity<EmployeeDTO> updateEmployeeByID(@RequestBody EmployeeDTO employeeDTO, @PathVariable(name = "employeeID") UUID id){
+    public ResponseEntity<Optional<EmployeeDTO>> updateEmployeeByID(@RequestBody @Valid EmployeeDTO employeeDTO, @PathVariable(name = "employeeID") UUID id){
         return new ResponseEntity<>(employeeService.updateEmployeeByID(id, employeeDTO), HttpStatus.ACCEPTED);
     }
 
