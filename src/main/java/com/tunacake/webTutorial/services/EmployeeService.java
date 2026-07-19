@@ -44,8 +44,7 @@ public class EmployeeService {
 
     public EmployeeDTO createNewEmployee(@Valid EmployeeDTO newemployeeDTO) {
         EmployeeEntity employeeEntity = modelMapper.map(newemployeeDTO, EmployeeEntity.class);
-        EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
-        return modelMapper.map(savedEntity, EmployeeDTO.class);
+        return modelMapper.map(employeeRepository.save(employeeEntity), EmployeeDTO.class);
     }
 
     public Optional<EmployeeDTO> updateEmployeeByID(UUID id, EmployeeDTO employeeDTO) {

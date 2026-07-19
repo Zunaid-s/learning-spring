@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class ApiError {
+public class ApiResponseErrorFormat {
 
     private HttpStatus status;
 
